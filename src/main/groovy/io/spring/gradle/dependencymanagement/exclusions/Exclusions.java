@@ -31,7 +31,7 @@ public class Exclusions {
 
     private final Map<String, Set<String>> exclusionsByDependency = new HashMap<String, Set<String>>();
 
-    void add(String dependency, Collection<String> exclusionsForDependency) {
+    public void add(String dependency, Collection<String> exclusionsForDependency) {
         Set<String> exclusions = this.exclusionsByDependency.get(dependency);
         if (exclusions == null) {
             exclusions = new HashSet<String>();
@@ -41,13 +41,13 @@ public class Exclusions {
         exclusions.addAll(exclusionsForDependency);
     }
 
-    void addAll(Exclusions toAdd) {
+    public void addAll(Exclusions toAdd) {
         for (Map.Entry<String, Set<String>> entry : toAdd.exclusionsByDependency.entrySet()) {
             add(entry.getKey(), entry.getValue());
         }
     }
 
-    Set<String> exclusionsForDependency(String dependency) {
+    public Set<String> exclusionsForDependency(String dependency) {
         return exclusionsByDependency.get(dependency);
     }
 

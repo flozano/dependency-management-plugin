@@ -2,9 +2,11 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.4.0'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:1.2'
     }
 }
 
@@ -15,6 +17,20 @@ apply plugin: 'maven'
 apply plugin: 'com.jfrog.artifactory'
 
 apply from: 'publish-maven.gradle'
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+        properties {
+                property 'sonar.branch', '1.1.x'
+                property 'sonar.jacoco.reportPath', "${buildDir.name}/jacoco.exec"
+                property 'sonar.java.coveragePlugin', 'jacoco'
+                property 'sonar.links.ci', 'https://build.spring.io/browse/SRD'
+                property 'sonar.links.homepage', 'https://github.com/spring-projects/spring-restdocs'
+                property 'sonar.links.issue', 'https://github.com/spring-projects/spring-restdocs'
+                property 'sonar.links.scm', 'https://github.com/spring-projects/spring-restdocs'
+        }
+}
 
 repositories {
     mavenCentral()

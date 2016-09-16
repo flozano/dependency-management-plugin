@@ -17,6 +17,7 @@
 package io.spring.gradle.dependencymanagement
 
 import io.spring.gradle.dependencymanagement.maven.PomDependencyManagementConfigurer
+import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 
@@ -56,7 +57,14 @@ class DependencyManagementExtension {
     }
 
     void resolutionStrategy(Closure closure) {
-        configurationContainer.resolutionStrategy closure
+        configurationContainer.resolutionStrategy(new Action<Configuration>() {
+
+            @Override
+            void execute(Configuration configuration) {
+                configuration.resolutionStrategy(closure);
+            }
+
+        })
     }
 
     void generatedPomCustomization(Closure closure) {
@@ -69,7 +77,7 @@ class DependencyManagementExtension {
         dependencyManagementContainer.managedVersionsForConfiguration(null)
     }
 
-    def getPomConfigurer() {
+    PomDependencyManagementConfigurer getPomConfigurer() {
         new PomDependencyManagementConfigurer(dependencyManagementContainer
                 .globalDependencyManagement, generatedPomCustomization)
     }
